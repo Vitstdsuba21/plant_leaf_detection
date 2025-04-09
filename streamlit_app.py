@@ -6,7 +6,28 @@ from PIL import Image  # For handling image formats
 import gdown
 import tensorflow as tf
 import os
+import tensorflow as tf
+from tensorflow.keras import layers, models
+
+# Build a simple model (as an example)
+model = models.Sequential([
+    layers.Input(shape=(224, 224, 3)),
+    layers.Conv2D(32, (3, 3), activation='relu'),
+    layers.MaxPooling2D(2, 2),
+    layers.Flatten(),
+    layers.Dense(64, activation='relu'),
+    layers.Dense(3, activation='softmax')  # Change to your number of classes
+])
+
+# Compile the model
+model.compile(optimizer='adam',
+              loss='categorical_crossentropy',
+              metrics=['accuracy'])
+
+# Now you can save it
 model.save("trained_model.keras")
+
+
 model.save_weights("trained_model.keras")
 model.load_weights("trained_model.keras")
 
