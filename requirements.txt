@@ -1,5 +1,6 @@
 streamlit
 numpy
+gdown
 pandas
 opencv-python
 pillow
