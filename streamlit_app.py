@@ -29,8 +29,10 @@ model.save("trained_model.keras")
 
 model = tf.keras.models.load_model("trained_model.keras")
 
-model.save_weights("trained_model.keras")
-model.load_weights("trained_model.keras")
+model.save_weights("trained_model_weights.h5")  # or .ckpt
+
+model.load_weights("trained_model_weights.h5")
+
 
 # Google Drive shareable link's file ID
 file_id = "1KU4h7ztVsEmhbZj_g8GaRBK6S9q8fTag"
