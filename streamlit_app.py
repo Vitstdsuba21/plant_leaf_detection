@@ -10,6 +10,11 @@ import os
 # -------------------------------
 
 # Google Drive file ID and URL
+# -------------------------------
+# Download and Load Pre-trained Model
+# -------------------------------
+
+# Google Drive file ID and URL
 file_id = "1KU4h7ztVsEmhbZj_g8GaRBK6S9q8fTag"
 url = f"https://drive.google.com/uc?id={file_id}"
 model_file = "trained_model.keras"
@@ -17,10 +22,17 @@ model_file = "trained_model.keras"
 # Download the model if not already present
 if not os.path.exists(model_file):
     with st.spinner("Downloading model..."):
-        gdown.download(url, model_file, quiet=False)
+        result = gdown.download(url, model_file, quiet=False, use_cookies=False)
+        if result is None or not os.path.exists(model_file):
+            st.error("❌ Model download failed. Please check the Google Drive link and file permissions.")
+            st.stop()
 
-# Load the model
-model = tf.keras.models.load_model(model_file)
+# Try loading the model safely
+try:
+    model = tf.keras.models.load_model(model_file)
+except Exception as e:
+    st.error(f"❌ Failed to load model: {e}")
+    st.stop()
 
 # -------------------------------
 # Prediction Function
