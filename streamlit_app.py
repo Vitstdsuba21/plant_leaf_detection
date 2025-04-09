@@ -6,6 +6,9 @@ from PIL import Image  # For handling image formats
 import gdown
 import tensorflow as tf
 import os
+model.save("trained_model.keras")
+model.save_weights("trained_model.keras")
+model.load_weights("trained_model.keras")
 
 # Google Drive shareable link's file ID
 file_id = "1KU4h7ztVsEmhbZj_g8GaRBK6S9q8fTag"
