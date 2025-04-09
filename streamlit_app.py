@@ -26,11 +26,11 @@ model = tf.keras.models.load_model(model_file)
 # Prediction Function
 # -------------------------------
 def model_prediction(test_image):
-    image = Image.open(test_image)
+    image = Image.open(test_image).convert("RGB")
     image = image.resize((224, 224))  # Resize to model input size
     input_arr = tf.keras.preprocessing.image.img_to_array(image)
     input_arr = np.expand_dims(input_arr, axis=0)  # Add batch dimension
-    input_arr = input_arr / 255.0  # Normalize if model trained that way
+    input_arr = input_arr / 255.0  # Normalize
     prediction = model.predict(input_arr)
     result_index = np.argmax(prediction)
     confidence = float(np.max(prediction))
@@ -118,4 +118,4 @@ elif app_mode == "Disease Recognition":
             result_index, confidence = model_prediction(test_image)
             prediction = class_names[result_index]
             st.success(f"🌿 The model predicts: **{prediction}**")
-            st.info(f"🔍 Confidence: **{confidence*100:.2f}%**")
+            st.info(f"🔍 Confidence: **{confidence * 100:.2f}%**")
