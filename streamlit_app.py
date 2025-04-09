@@ -29,7 +29,7 @@ model.save("trained_model.keras")
 
 model = tf.keras.models.load_model("trained_model.keras")
 
-model.save_weights("trained_model_weights.h5")  # or .ckpt
+model.save_weights("trained_model_weights.h5") 
 
 model.load_weights("trained_model_weights.h5")
 
