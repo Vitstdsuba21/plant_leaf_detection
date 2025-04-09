@@ -16,7 +16,8 @@ model_file = "trained_model.keras"
 
 # Download the model if not already present
 if not os.path.exists(model_file):
-    gdown.download(url, model_file, quiet=False)
+    with st.spinner("Downloading model..."):
+        gdown.download(url, model_file, quiet=False)
 
 # Load the model
 model = tf.keras.models.load_model(model_file)
@@ -29,9 +30,11 @@ def model_prediction(test_image):
     image = image.resize((224, 224))  # Resize to model input size
     input_arr = tf.keras.preprocessing.image.img_to_array(image)
     input_arr = np.expand_dims(input_arr, axis=0)  # Add batch dimension
+    input_arr = input_arr / 255.0  # Normalize if model trained that way
     prediction = model.predict(input_arr)
     result_index = np.argmax(prediction)
-    return result_index
+    confidence = float(np.max(prediction))
+    return result_index, confidence
 
 # -------------------------------
 # Class Labels
@@ -64,12 +67,12 @@ app_mode = st.sidebar.selectbox("Select Page", ["Home", "About", "Disease Recogn
 if app_mode == "Home":
     st.header("🌱 PLANT DISEASE RECOGNITION SYSTEM")
     image_path = "home_page.jpg"
-    st.image(image_path, use_container_width=True)
-
+    if os.path.exists(image_path):
+        st.image(image_path, use_container_width=True)
     st.markdown(""" 
     Welcome to the Plant Disease Recognition System! 🌿🔍
 
-    Our mission is to help in identifying plant diseases efficiently. Upload an image of a plant, and our system will analyze it to detect any signs of diseases.
+    Our mission is to help identify plant diseases efficiently. Upload an image of a plant, and our system will analyze it to detect any signs of diseases.
 
     ### How It Works
     1. **Upload Image:** Go to the *Disease Recognition* page.
@@ -112,6 +115,7 @@ elif app_mode == "Disease Recognition":
         if st.button("Predict"):
             st.snow()
             st.write("Analyzing the image...")
-            result_index = model_prediction(test_image)
+            result_index, confidence = model_prediction(test_image)
             prediction = class_names[result_index]
             st.success(f"🌿 The model predicts: **{prediction}**")
+            st.info(f"🔍 Confidence: **{confidence*100:.2f}%**")
