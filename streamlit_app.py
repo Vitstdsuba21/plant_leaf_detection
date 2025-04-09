@@ -27,6 +27,7 @@ model.compile(optimizer='adam',
 # Now you can save it
 model.save("trained_model.keras")
 
+model = tf.keras.models.load_model("trained_model.keras")
 
 model.save_weights("trained_model.keras")
 model.load_weights("trained_model.keras")
