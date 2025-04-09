@@ -3,6 +3,22 @@ import tensorflow as tf
 import numpy as np
 from PIL import Image  # For handling image formats
 
+import gdown
+import tensorflow as tf
+import os
+
+# Google Drive shareable link's file ID
+file_id = "1KU4h7ztVsEmhbZj_g8GaRBK6S9q8fTag"
+url = f"https://drive.google.com/uc?id={file_id}"
+output = "trained_model.keras"
+
+# Download only if not already present
+if not os.path.exists(output):
+    gdown.download(url, output, quiet=False)
+
+# Load the model
+model = tf.keras.models.load_model(output)
+
 # TensorFlow Model Prediction
 def model_prediction(test_image):
     model = tf.keras.models.load_model('trained_model.keras')
